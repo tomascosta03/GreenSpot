@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import dotenv from "dotenv";
-import UserRouter from "./routes/user/routes";
+import UserRouter from "./routes/user";
 
 
 dotenv.config();
@@ -10,9 +10,12 @@ const app = express();
 const port = process.env.PORT;
 const mongoose = require('mongoose');
 
+//middleware 
 app.use(express.json())
+
+
 app.use(morgan('tiny'));
-app.use("/user", UserRouter);
+app.use('/api/users', UserRouter);
 
 
 // ligar a bd
