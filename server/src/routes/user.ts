@@ -1,54 +1,31 @@
 import express from "express";
 
 
-const router = express.Router();
+const router = express.Router()
 const User = require('../models/userModel')
+const { 
+    createUser,
+    getUsers,
+    getUser,
+    deleteUser,
+    updateUser 
+} = require('../controllers/userController')
 
-const users = [
-    {
-        username: "vhsousa",
-        email: "vhsousa@me.com"
-    },
-    {
-        username: "joaquim",
-        email: "asd@me.com"
-    }
-]
 
 // todos os utilizadores
-router.get("/", (_, res) => {
-
-    res.json(users);
-});
+router.get("/", getUsers)
 
 // ver um utilizador
-router.get("/:id", (req, res) => {
-    res.json(users.filter(u => u.email == req.params.id));
-})
+router.get("/:id", getUser)
 
 //adicionar um utilizador
-router.post('/', async (req, res) => {
-    const {name, email, contact, isAdmin} = req.body
-    try{
-        const user = await User.create({name, email, contact, isAdmin})
-        res.status(200).json(user)
-    }catch(error){
-        res.status(400).json({error})
-
-    }
-    res.json({mssg: 'POST a new User'})
-
-});
+router.post("/", createUser)
 
 //remover um utilizador
-router.delete('/:id', (req, res) => {
-    res.json({mssg: 'DELETE a User'})
-
-});
+router.delete('/:id', deleteUser)
 
 //atualizar um utilizador
-router.patch('/:id', (req, res) => {
-    res.json({mssg: 'UPDATE a User'})
+router.patch('/:id', updateUser)
 
-});
+
 export default router;
