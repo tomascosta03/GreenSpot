@@ -1,16 +1,18 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MapScreen from './screens/Map';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import LoginPage from './Screens/LoginPage';
+import MapPage from './Screens/Map';
+import RegistrationPage from './Screens/RegistrationPage';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Switch>
-          <Route path="/map" component={MapScreen} />
-          {/* Outras rotas da sua aplicação */}
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/login" component={LoginPage} />
+        <Route path="/map" component={MapPage} />
+        <Route path="/registro" component={RegistrationPage} />
+        <Redirect from="/" to="/login" exact />
+      </Switch>
     </Router>
   );
 }
