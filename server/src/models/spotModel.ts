@@ -1,21 +1,20 @@
-import { Document, Schema, model } from "mongoose";
+import mongoose from "mongoose"
 
-// Define a Mongoose model
-export interface ISpot extends Document {
-    idSpot: number,
-    location: string,
-    size: string,
-    ocupied: boolean
-}
+const Schema = mongoose.Schema;
 
-const SpotSchema = new Schema({
-    idSpot: Number,
-    location: String,
-    size: String,
-    ocupied: Boolean
-});
+const spotSchema = new Schema({
+    location: {
+        type: String,
+        required: true
+    },
+    size: {
+        type: String,
+        required: true
+    },
+    occupied: {
+        type: Boolean,
+        required: true
+    }
+}, { timestamps: true });
 
-export const SpotModel = model<ISpot>(
-    "spots",
-    SpotSchema
-);
+module.exports = mongoose.model('Spot', spotSchema);

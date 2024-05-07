@@ -2,19 +2,23 @@ import mongoose from "mongoose"
 
 const Schema = mongoose.Schema;
 
-const vehicleSchema = new Schema({
-    licensePlate: {
+const paymentSchema = new Schema({
+    value: {
+        type: Number,
+        required: true
+    },
+    description: {
         type: String,
         required: true
     },
-    color: {
+    method: {
         type: String,
         required: true
     },
-    model: {
+    type: {
         type: String,
         required: true
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Vehicle', vehicleSchema);
+module.exports = mongoose.model('Payment', paymentSchema);

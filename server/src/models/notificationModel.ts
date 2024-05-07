@@ -2,19 +2,15 @@ import mongoose from "mongoose"
 
 const Schema = mongoose.Schema;
 
-const vehicleSchema = new Schema({
-    licensePlate: {
+const notificationSchema = new Schema({
+    message: {
         type: String,
         required: true
     },
-    color: {
-        type: String,
-        required: true
-    },
-    model: {
+    typeOfNotification: {
         type: String,
         required: true
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Vehicle', vehicleSchema);
+module.exports = mongoose.model('Notification', notificationSchema);
