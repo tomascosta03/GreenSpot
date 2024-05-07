@@ -19,12 +19,9 @@ const parkSchema = new Schema({
         type: Number,
         required: true
     },
-    type: {
-        type: String,
+    isPaid: {
+        type: Boolean,
         required: true
-    },
-    parkCol: {
-        type: String
     }
 }, { timestamps: true });
 

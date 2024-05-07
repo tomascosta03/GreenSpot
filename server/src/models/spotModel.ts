@@ -8,10 +8,14 @@ const spotSchema = new Schema({
         required: true
     },
     size: {
-        type: String,
+        type: Number,
         required: true
     },
     occupied: {
+        type: Boolean,
+        required: true
+    },
+    isPrivate: {
         type: Boolean,
         required: true
     }

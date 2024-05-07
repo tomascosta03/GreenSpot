@@ -10,9 +10,6 @@ const reservationSchema = new Schema({
     duration: {
         type: Number,
         required: true
-    },
-    reservationCol: {
-        type: String
     }
 }, { timestamps: true });
 
