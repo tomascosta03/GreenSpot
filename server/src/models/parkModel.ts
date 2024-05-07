@@ -2,23 +2,27 @@ import mongoose from "mongoose"
 
 const Schema = mongoose.Schema;
 
-const spotSchema = new Schema({
+const parkSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
     location: {
         type: String,
         required: true
     },
-    size: {
+    emptySpaces: {
         type: Number,
         required: true
     },
-    occupied: {
-        type: Boolean,
+    occupiedSpaces: {
+        type: Number,
         required: true
     },
-    isPrivate: {
+    isPaid: {
         type: Boolean,
         required: true
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Spot', spotSchema);
+module.exports = mongoose.model('Park', parkSchema);
