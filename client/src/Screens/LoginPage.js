@@ -50,7 +50,7 @@ function LoginPage() {
             </div>
 
             <div className="form-link">
-              <a href="#" className="forgot-pass">Esqueci a password</a>
+              <a href="/Password" className="forgot-pass">Esqueci a password</a>
             </div>
 
             <div className="field button-field">
