@@ -9,11 +9,7 @@ function RegisterPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Aqui você pode adicionar lógica para registrar o usuário
-    // Por enquanto, apenas redireciona para a página de login após o registro
     history.push('/login');
-
     console.log('Registrando:', email, password);
   };
 
