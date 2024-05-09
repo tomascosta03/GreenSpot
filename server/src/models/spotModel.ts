@@ -3,8 +3,12 @@ import mongoose from "mongoose"
 const Schema = mongoose.Schema;
 
 const spotSchema = new Schema({
-    location: {
-        type: String,
+    longitude: {
+        type: Number,
+        required: true
+    },
+    latitude: {
+        type: Number,
         required: true
     },
     size: {
