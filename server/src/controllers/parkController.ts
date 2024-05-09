@@ -27,10 +27,10 @@ const getPark = async (req: Request, res: Response) => {
 
 // criar um parque
 const createPark = async (req: Request, res: Response) => {
-    const { name, location, emptySpaces, occupiedSpaces, isPaid } = req.body;
+    const { name, longitude, latitude, emptySpaces, occupiedSpaces, isPaid } = req.body;
 
     try {
-        const park = await Park.create({ name, location, emptySpaces, occupiedSpaces, isPaid });
+        const park = await Park.create({ name, longitude, latitude, emptySpaces, occupiedSpaces, isPaid });
         res.status(200).json(park);
     } catch (error) {
         res.status(400).json({ error });
