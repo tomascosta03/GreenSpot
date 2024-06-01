@@ -17,8 +17,19 @@ function RegisterPage() {
     <section className="container forms">
       <div className="form register">
         <div className="form-content">
-          <header>Registro</header>
+          <header>Registo</header>
           <form onSubmit={handleSubmit}>
+
+          <div className="field input-field">
+              <input
+                type="name"
+                placeholder="name"
+                className="name"
+                value={name}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
             <div className="field input-field">
               <input
                 type="email"
@@ -38,6 +49,7 @@ function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            
 
             <div className="field button-field">
               <button type="submit">Registrar</button>
