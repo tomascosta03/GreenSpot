@@ -27,10 +27,10 @@ const getSpot = async (req: Request, res: Response) => {
 
 // criar um spot
 const createSpot = async (req: Request, res: Response) => {
-    const { location, size, occupied, isPrivate } = req.body;
+    const { longitude, latitude, size, occupied, isPrivate } = req.body;
 
     try {
-        const spot = await Spot.create({ location, size, occupied, isPrivate });
+        const spot = await Spot.create({ longitude, latitude, size, occupied, isPrivate });
         res.status(200).json(spot);
     } catch (error) {
         res.status(400).json({ error });

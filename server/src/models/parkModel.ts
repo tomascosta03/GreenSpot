@@ -7,8 +7,12 @@ const parkSchema = new Schema({
         type: String,
         required: true
     },
-    location: {
-        type: String,
+    longitude: {
+        type: Number,
+        required: true
+    },
+    latitude: {
+        type: Number,
         required: true
     },
     emptySpaces: {
