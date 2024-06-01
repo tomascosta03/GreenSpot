@@ -66,14 +66,14 @@ function RegisterPage() {
         <div className="media-options">
           <a href="#" className="field facebook">
           <img src="https://www.edigitalagency.com.au/wp-content/uploads/facebook-icon-white-png.png" alt="" className="google-img" />
-            <span>Registrar com o Facebook</span>
+            <span>Registar com o Facebook</span>
           </a>
         </div>
 
         <div className="media-options">
           <a href="#" className="field google">
             <img src="https://w7.pngwing.com/pngs/326/85/png-transparent-google-logo-google-text-trademark-logo-thumbnail.png" alt="" className="google-img" />
-            <span>Registrar com o Google</span>
+            <span>Registar com o Google</span>
           </a>
         </div>
       </div>
