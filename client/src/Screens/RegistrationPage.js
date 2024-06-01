@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import './LoginPage.css';
 
 function RegisterPage() {
+  const [userName, setUserName] = useState(''); // Estado para nome
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
@@ -10,7 +11,7 @@ function RegisterPage() {
   const handleSubmit = (event) => {
     event.preventDefault();
     history.push('/login');
-    console.log('Registrando:', email, password);
+    console.log('Registrando:', userName, email, password);
   };
 
   return (
@@ -19,14 +20,13 @@ function RegisterPage() {
         <div className="form-content">
           <header>Registo</header>
           <form onSubmit={handleSubmit}>
-
-          <div className="field input-field">
+            <div className="field input-field">
               <input
-                type="name"
-                placeholder="name"
+                type="text"
+                placeholder="Nome"
                 className="name"
-                value={name}
-                onChange={(e) => setPassword(e.target.value)}
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </div>
 
@@ -49,7 +49,6 @@ function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            
 
             <div className="field button-field">
               <button type="submit">Registrar</button>
@@ -63,19 +62,7 @@ function RegisterPage() {
 
         <div className="line"></div>
 
-        <div className="media-options">
-          <a href="#" className="field facebook">
-          <img src="https://www.edigitalagency.com.au/wp-content/uploads/facebook-icon-white-png.png" alt="" className="google-img" />
-            <span>Registar com o Facebook</span>
-          </a>
-        </div>
-
-        <div className="media-options">
-          <a href="#" className="field google">
-            <img src="https://w7.pngwing.com/pngs/326/85/png-transparent-google-logo-google-text-trademark-logo-thumbnail.png" alt="" className="google-img" />
-            <span>Registar com o Google</span>
-          </a>
-        </div>
+        
       </div>
     </section>
   );

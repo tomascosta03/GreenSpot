@@ -4,6 +4,8 @@ import LoginPage from './Screens/LoginPage';
 import MapPage from './Screens/Map';
 import RegistrationPage from './Screens/RegistrationPage';
 import PasswordResetForm from './Screens/Password';
+import AdminDash from './Screens/AdminDash';
+
 function App() {
   return (
     <Router>
@@ -12,6 +14,7 @@ function App() {
         <Route path="/map" component={MapPage} />
         <Route path="/registro" component={RegistrationPage} />
         <Route path="/password" component={PasswordResetForm} />
+        <Route path="/admin" component={AdminDash} />
         <Redirect from="/" to="/login" exact />
       </Switch>
     </Router>
