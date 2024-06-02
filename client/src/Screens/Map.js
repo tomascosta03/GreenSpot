@@ -1,3 +1,4 @@
+// src/Screens/Map.js
 import React, { useState, useEffect } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
 import axios from 'axios';
@@ -26,7 +27,7 @@ function App() {
     <Map
       {...viewport}
       mapboxApiAccessToken="pk.eyJ1IjoiZmVyb3BlcyIsImEiOiJjbHZ0amdxa3kxYnp3MmxtaGo3bjkzcml3In0.IVlmneQW7Me9kUfvoF6DkQ"
-      onViewportChange={viewport => setViewport(viewport)}
+      onViewportChange={nextViewport => setViewport(nextViewport)}
       style={{ width: "100vw", height: "100vh" }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
     >

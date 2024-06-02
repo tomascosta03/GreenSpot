@@ -4,7 +4,9 @@
   "description": "A server for DAI class",
   "main": "server.ts",
   "scripts": {
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js"
   },
   "author": "Vítor Sousa (vitor.hm.sousa@uac.pt)",
   "license": "ISC",
@@ -19,6 +21,7 @@
     "nodemon": "^3.1.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
     "ts-node-dev": "^2.0.0",

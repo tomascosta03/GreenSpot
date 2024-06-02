@@ -1,21 +1,25 @@
+// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoginPage from './Screens/LoginPage';
-import MapPage from './Screens/Map';
-import RegistrationPage from './Screens/RegistrationPage';
+import RegisterPage from './Screens/RegistrationPage';
 import PasswordResetForm from './Screens/Password';
-import AdminDash from './Screens/AdminDash';
+import UserProfile from './Screens/UserProfile';
+import UserInfo from './Screens/UserInfo';
+import UserMap from './Screens/UserMap';
+import './App.css';
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route path="/login" component={LoginPage} />
-        <Route path="/map" component={MapPage} />
-        <Route path="/registro" component={RegistrationPage} />
+        <Route path="/registo" component={RegisterPage} />
         <Route path="/password" component={PasswordResetForm} />
-        <Route path="/admin" component={AdminDash} />
-        <Redirect from="/" to="/login" exact />
+        <Route path="/profile" component={UserProfile} />
+        <Route path="/info" component={UserInfo} />
+        <Route path="/map" component={UserMap} />
+        <Route path="/" component={LoginPage} />
       </Switch>
     </Router>
   );
