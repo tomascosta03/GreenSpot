@@ -1,31 +1,18 @@
-import express from "express";
+import express from 'express';
+import { loginUser, registerUser, createUser, getUsers, getUser, deleteUser, updateUser } from '../controllers/userController';
+import authMiddleware from '../middlewares/authMiddleware';
 
+const router = express.Router();
 
-const router = express.Router()
-const User = require('../models/userModel')
-const { 
-    createUser,
-    getUsers,
-    getUser,
-    deleteUser,
-    updateUser 
-} = require('../controllers/userController')
+// Todas as rotas de utilizadores protegidas
+router.get("/", authMiddleware, getUsers);
+router.get("/:id", authMiddleware, getUser);
+router.post("/", authMiddleware, createUser);
+router.delete('/:id', authMiddleware, deleteUser);
+router.patch('/:id', authMiddleware, updateUser);
 
-
-// todos os utilizadores
-router.get("/", getUsers)
-
-// ver um utilizador
-router.get("/:id", getUser)
-
-//adicionar um utilizador
-router.post("/", createUser)
-
-//remover um utilizador
-router.delete('/:id', deleteUser)
-
-//atualizar um utilizador
-router.patch('/:id', updateUser)
-
+// Registo de user e login não precisam de autenticação
+router.post('/register', registerUser);
+router.post('/login', loginUser);
 
 export default router;

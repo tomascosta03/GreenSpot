@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ProjectRootManager">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
+=======
+  <component name="Black">
+    <option name="sdkName" value="Python 3.12 (Jogo com Locks-20240523)" />
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="FLOW" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (Jogo com Locks-20240523)" project-jdk-type="Python SDK" />
+>>>>>>> 71294935e523aa0e855809b3ac62b52a8d08e76f
 </project>
