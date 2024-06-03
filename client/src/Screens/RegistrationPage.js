@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Text } from 'react-native'; // Importe o componente Text do React Native
 import './LoginPage.css';
 
 function RegisterPage() {
@@ -18,7 +19,7 @@ function RegisterPage() {
     <section className="container forms">
       <div className="form register">
         <div className="form-content">
-          <header>Registo</header>
+          <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Registo</Text> {/* Use o componente Text para renderizar o título */}
           <form onSubmit={handleSubmit}>
             <div className="field input-field">
               <input
@@ -56,13 +57,11 @@ function RegisterPage() {
           </form>
 
           <div className="form-link">
-            <span>Já tem uma conta? <a href="/login" className="link login-link">Login</a></span>
+            <Text>Já tem uma conta? <a href="/login" className="link login-link">Login</a></Text> {/* Use o componente Text para renderizar o texto */}
           </div>
         </div>
 
         <div className="line"></div>
-
-        
       </div>
     </section>
   );

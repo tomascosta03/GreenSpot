@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
 import axios from 'axios';
+import { Text } from 'react-native'; // Importe o componente Text do React Native
 import './Map.css';
 
 function App() {
@@ -51,12 +52,12 @@ function App() {
             closeOnClick={false}
             anchor="top"
           >
-            <div>
+            <Text> {/* Envolver o conteúdo em um componente Text */}
               <h2>{parque.nome}</h2>
               <p>Morada: {parque.morada}</p>
               <p>Lugares Disponíveis: {parque.lugaresDisponiveis}</p>
               <p>Lugares Ocupados: {parque.lugaresOcupados}</p>
-            </div>
+            </Text>
           </Popup>
         </Marker>
       ))}

@@ -1,86 +1,95 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import './LoginPage.css';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
-function LoginPage() {
+function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSignIn = async () => {
+    setError('');
 
-    const correctEmail = 'admin@example.com'; // apenas para demonstração
-    const correctPassword = '123';
+    try {
+      const response = await axios.post('http://localhost:8000/api/users/login', {
+        email,
+        password,
+      });
 
-    if (email === correctEmail && password === correctPassword) {
-      history.push('/map');
-    } else {
-      alert('Login failed: Incorrect email or password.');
+      if (response.status === 200) {
+        const { token } = response.data;
+        await AsyncStorage.setItem('token', token);
+        navigation.navigate('Profile');
+      } else {
+        setError('Erro ao fazer login. Por favor, tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro ao fazer login:', error.response ? error.response.data : error);
+      setError('Erro ao fazer login. Por favor, tente novamente.');
     }
-
-    console.log('Logging in:', email, password);
   };
 
   return (
-    <section className="container forms">
-      <div className="form login">
-        <div className="form-content">
-          <header>Login</header>
-          <form onSubmit={handleSubmit}>
-            <div className="field input-field">
-              <input
-                type="email"
-                placeholder="Email"
-                className="input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            <div className="field input-field">
-              <input
-                type="password"
-                placeholder="Password"
-                className="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <i className='bx bx-hide eye-icon'></i>
-            </div>
-
-            <div className="form-link">
-              <a href="/Password" className="forgot-pass">Esqueci a password</a>
-            </div>
-
-            <div className="field button-field">
-              <button type="submit">Login</button>
-            </div>
-          </form>
-
-          <div className="form-link">
-            <span>Não tem conta? <a href="/registro" className="link signup-link">Signup</a></span>
-          </div>
-        </div>
-
-        <div className="line"></div>
-
-        <div className="media-options">
-          <a href="#" className="field facebook">
-          <img src="https://www.edigitalagency.com.au/wp-content/uploads/facebook-icon-white-png.png" alt="" className="google-img" />
-            <span>Registrar com o Facebook</span>
-          </a>
-        </div>
-
-        <div className="media-options">
-          <a href="#" className="field google">
-            <img src="https://w7.pngwing.com/pngs/326/85/png-transparent-google-logo-google-text-trademark-logo-thumbnail.png" alt="" className="google-img" />
-            <span>Registrar com o Google</span>
-          </a>
-        </div>
-      </div>
-    </section>
+    <View style={styles.container}>
+      <View style={styles.form}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <Button title="Iniciar sessão" onPress={handleSignIn} />
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        <TouchableOpacity onPress={() => navigation.navigate('RegistrationForm')}>
+          <Text style={styles.registerText}>Não tem uma conta? Registar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
-export default LoginPage;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#d2f4dd',
+  },
+  form: {
+    backgroundColor: '#fff',
+    padding: 30,
+    borderRadius: 10,
+    elevation: 3,
+    width: '80%',
+    maxWidth: 500,
+    marginTop: 50,
+    marginBottom: 50,
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 20,
+  },
+  registerText: {
+    marginTop: 10,
+    textAlign: 'center',
+    color: '#683cec',
+  },
+});
+
+export default SignInScreen;
