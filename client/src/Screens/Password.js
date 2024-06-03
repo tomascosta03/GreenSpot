@@ -23,7 +23,7 @@ function PasswordResetForm() {
           />
         </div>
         <div className="field">
-          <button type="submit">Reset Password</button>
+          <button type="submit">Resetar Password</button>
         </div>
       </form>
     </div>
