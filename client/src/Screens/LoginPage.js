@@ -1,8 +1,7 @@
-// LoginPage.js
-
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -12,26 +11,26 @@ function SignInScreen({ navigation }) {
   const handleSignIn = async () => {
     setError('');
   
-    // Simulação de dados de conta fictícia
-    const fakeUser = {
-      email: 'user@example.com',
-      password: 'password123',
-    };
+    try {
+      const response = await axios.post('http://localhost:8000/api/users/login', {
+        email,
+        password
+      });
 
-    // Verifica se os dados inseridos correspondem à conta fictícia
-    if (email === fakeUser.email && password === fakeUser.password) {
-      try {
-        // Salva o token fictício no AsyncStorage
-        await AsyncStorage.setItem('token', 'fakeToken123');
+      // Verifica se a autenticação foi bem-sucedida
+      if (response.data.success) {
+        // Salva o token no AsyncStorage
+        await AsyncStorage.setItem('token', response.data.token);
 
         // Navega para a tela de Map
         navigation.navigate('Map');
-      } catch (error) {
-        console.error('Erro ao fazer login:', error);
-        setError('Erro ao fazer login. Por favor, tente novamente.');
+      } else {
+        // Exibe mensagem de erro se a autenticação falhou
+        setError('Credenciais inválidas. Por favor, tente novamente.');
       }
-    } else {
-      setError('Credenciais inválidas. Por favor, tente novamente.');
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      setError('Erro ao fazer login. Por favor, tente novamente.');
     }
   };
   
