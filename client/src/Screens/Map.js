@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import Map, { Marker, Popup } from 'react-map-gl';
+import { Text, StyleSheet } from 'react-native';
+import MapView, { Marker, Popup } from 'react-native-maps';
 import axios from 'axios';
-import './Map.css';
 
-function App() {
-  const [viewport, setViewport] = useState({
-    latitude: 37.7459205,
-    longitude: -25.6661979,
-    zoom: 16,
-  });
-
+function MapScreen() {
   const [parques, setParques] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:3000/api/parks')
       .then(response => {
+        console.log('Dados do parque:', response.data);
         setParques(response.data);
       })
       .catch(error => {
@@ -22,46 +17,50 @@ function App() {
       });
   }, []);
 
+  console.log('Parques:', parques);
+
   return (
-    <Map
-      {...viewport}
-      mapboxApiAccessToken="pk.eyJ1IjoiZmVyb3BlcyIsImEiOiJjbHZ0amdxa3kxYnp3MmxtaGo3bjkzcml3In0.IVlmneQW7Me9kUfvoF6DkQ"
-      onViewportChange={viewport => setViewport(viewport)}
-      style={{ width: "100vw", height: "100vh" }}
-      mapStyle="mapbox://styles/mapbox/streets-v9"
+    <MapView
+      style={styles.map}
+      initialRegion={{
+        latitude: 37.7459205,
+        longitude: -25.6661979,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }}
     >
-      {parques.length > 0 && parques.map(parque => (
+      {parques.map(parque => (
         <Marker
           key={parque._id}
-          longitude={parque.longitude}
-          latitude={parque.latitude}
-          anchor="bottom"
+          coordinate={{
+            latitude: parque.latitude,
+            longitude: parque.longitude,
+          }}
         >
-          <img
-            width={35}
-            height={35}
-            src="https://w7.pngwing.com/pngs/258/471/png-transparent-car-park-parking-escalator-blue-electronics-text-thumbnail.png"
-            alt="Parque"
-            style={{ cursor: 'pointer' }}
-          />
-          <Popup
-            longitude={parque.longitude}
-            latitude={parque.latitude}
-            closeButton={true}
-            closeOnClick={false}
-            anchor="top"
-          >
-            <div>
-              <h2>{parque.nome}</h2>
-              <p>Morada: {parque.morada}</p>
-              <p>Lugares Disponíveis: {parque.lugaresDisponiveis}</p>
-              <p>Lugares Ocupados: {parque.lugaresOcupados}</p>
-            </div>
+          <Popup>
+            <Text>
+              <Text style={styles.title}>{parque.nome}</Text>
+              <Text style={styles.info}>Morada: {parque.morada}</Text>
+              <Text style={styles.info}>Lugares Disponíveis: {parque.lugaresDisponiveis}</Text>
+              <Text style={styles.info}>Lugares Ocupados: {parque.lugaresOcupados}</Text>
+            </Text>
           </Popup>
         </Marker>
       ))}
-    </Map>
+    </MapView>
   );
 }
 
-export default App;
+const styles = StyleSheet.create({
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  title: {
+    fontWeight: 'bold',
+  },
+  info: {
+    marginBottom: 5,
+  },
+});
+
+export default MapScreen;
