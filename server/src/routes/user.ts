@@ -1,31 +1,42 @@
 import express from "express";
-
+import { get } from "mongoose";
+import User from '../models/userModel';
 
 const router = express.Router()
-const User = require('../models/userModel')
+
 const { 
     createUser,
     getUsers,
     getUser,
     deleteUser,
-    updateUser 
+    updateUser,
+    getMe,
+    registerUser,
+    loginUser 
 } = require('../controllers/userController')
 
+import protect from "../middleware/authMiddleware";
+router.get('/me', protect, getMe)
 
 // todos os utilizadores
-router.get("/", getUsers)
+router.get("/", protect, getUsers)
 
 // ver um utilizador
-router.get("/:id", getUser)
+router.get("/:id", protect,getUser)
 
 //adicionar um utilizador
-router.post("/", createUser)
+router.post("/", protect, createUser)
 
 //remover um utilizador
-router.delete('/:id', deleteUser)
+router.delete('/:id', protect, deleteUser)
 
 //atualizar um utilizador
-router.patch('/:id', updateUser)
+router.patch('/:id', protect, updateUser)
+
+
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+
 
 
 export default router;
