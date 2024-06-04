@@ -1,7 +1,83 @@
 import { Request, Response } from 'express';
 
-const User = require('../models/userModel')
+import User from '../models/userModel';
 const mongoose = require('mongoose')
+
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler');
+
+
+const registerUser = asyncHandler(async (req: Request, res: Response) => {
+    const { name, email, password } = req.body
+  
+    if (!name || !email || !password) {
+      res.status(400).json({message: 'Por favor adiciona todos os campos'})
+    }
+  
+    // Check if user exists
+    const userExists = await User.findOne({ email })
+  
+    if (userExists) {
+      res.status(400).json({message: 'Utilizador Existente'})
+    }
+  
+    // Hash password
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
+  
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      isAdmin: false,
+      password: hashedPassword,
+    })
+  
+    if (user) {
+      res.status(201).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      })
+    } else {
+      res.status(400).json({message: 'Dados do utilizador inválidos'})
+    }
+  })
+  
+  const loginUser = asyncHandler(async (req: Request, res: Response) => {
+    const { email, password } = req.body
+  
+    // Check for user email
+    const user = await User.findOne({ email })
+  
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      })
+    } else {
+      res.status(400).json({message: 'Credenciais Inválidas'})
+    }
+  })
+  
+
+  const getMe = asyncHandler(async (req: Request, res: Response) => {
+    res.status(200).json(req.user)
+  })
+  
+  // Generate JWT
+  const generateToken = (id: any) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+      expiresIn: '30d',
+    })
+  }
+
+
+
 
 // todos os utilizadores
 const getUsers = async (req: Request, res: Response) => {
@@ -16,13 +92,13 @@ const getUser = async (req: Request, res: Response) => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         // assim verifica se o id e valido e nao crasha a app
-        return res.status(404).json({error: 'Utilizador nao existe'})
+        return res.status(404).json({error: 'Utilizador não existe'})
     }
     const user = await User.findById(id)
 
     if (!user) {
         // tem de ter o return senao o resto do codigo e executado
-        return res.status(404).json({error: 'Utilizador nao existe'})
+        return res.status(404).json({error: 'Utilizador não existe'})
     }
 
     res.status(200).json(user)
@@ -42,7 +118,7 @@ const createUser = async (req: Request, res: Response) => {
         res.status(400).json({error})
 
     }
-    res.json({mssg: 'POST a new User'})
+    res.json({message: 'POST de um novo utilizador'})
 
 }
 
@@ -52,14 +128,14 @@ const deleteUser = async (req: Request, res: Response) => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         // assim verifica se o id e valido e nao crasha a app
-        return res.status(404).json({error: 'Utilizador nao existe'})
+        return res.status(404).json({error: 'Utilizador não existe'})
     }
 
     const user = await User.findOneAndDelete({_id: id})
 
     if (!user) {
         // tem de ter o return senao o resto do codigo e executado
-        return res.status(400).json({error: 'Utilizador nao existe'})
+        return res.status(400).json({error: 'Utilizador não existe'})
     }
 
     res.status(200).json(user)
@@ -71,7 +147,7 @@ const updateUser = async (req: Request, res: Response) => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         // assim verifica se o id e valido e nao crasha a app
-        return res.status(404).json({error: 'Utilizador nao existe'})
+        return res.status(404).json({error: 'Utilizador não existe'})
     }
 
     const user = await User.findOneAndUpdate({_id: id}, {
@@ -80,7 +156,7 @@ const updateUser = async (req: Request, res: Response) => {
 
     if (!user) {
         // tem de ter o return senao o resto do codigo e executado
-        return res.status(400).json({error: 'Utilizador nao existe'})
+        return res.status(400).json({error: 'Utilizador não existe'})
     }
 
     res.status(200).json(user)
@@ -92,5 +168,8 @@ module.exports = {
     getUsers,
     getUser,
     deleteUser,
-    updateUser
+    updateUser,
+    registerUser,
+    loginUser,
+    getMe,
 }
