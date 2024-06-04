@@ -1,86 +1,128 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import './LoginPage.css';
+// LoginPage.js
 
-function LoginPage() {
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSignIn = async () => {
+    setError('');
+  
+    // Simulação de dados de conta fictícia
+    const fakeUser = {
+      email: 'user@example.com',
+      password: 'password123',
+    };
 
-    const correctEmail = 'admin@example.com'; // apenas para demonstração
-    const correctPassword = '123';
+    // Verifica se os dados inseridos correspondem à conta fictícia
+    if (email === fakeUser.email && password === fakeUser.password) {
+      try {
+        // Salva o token fictício no AsyncStorage
+        await AsyncStorage.setItem('token', 'fakeToken123');
 
-    if (email === correctEmail && password === correctPassword) {
-      history.push('/map');
+        // Navega para a tela de Map
+        navigation.navigate('Map');
+      } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        setError('Erro ao fazer login. Por favor, tente novamente.');
+      }
     } else {
-      alert('Login failed: Incorrect email or password.');
+      setError('Credenciais inválidas. Por favor, tente novamente.');
     }
-
-    console.log('Logging in:', email, password);
   };
-
+  
   return (
-    <section className="container forms">
-      <div className="form login">
-        <div className="form-content">
-          <header>Login</header>
-          <form onSubmit={handleSubmit}>
-            <div className="field input-field">
-              <input
-                type="email"
-                placeholder="Email"
-                className="input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            <div className="field input-field">
-              <input
-                type="password"
-                placeholder="Password"
-                className="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <i className='bx bx-hide eye-icon'></i>
-            </div>
-
-            <div className="form-link">
-              <a href="/Password" className="forgot-pass">Esqueci a password</a>
-            </div>
-
-            <div className="field button-field">
-              <button type="submit">Login</button>
-            </div>
-          </form>
-
-          <div className="form-link">
-            <span>Não tem conta? <a href="/registro" className="link signup-link">Signup</a></span>
-          </div>
-        </div>
-
-        <div className="line"></div>
-
-        <div className="media-options">
-          <a href="#" className="field facebook">
-          <img src="https://www.edigitalagency.com.au/wp-content/uploads/facebook-icon-white-png.png" alt="" className="google-img" />
-            <span>Registrar com o Facebook</span>
-          </a>
-        </div>
-
-        <div className="media-options">
-          <a href="#" className="field google">
-            <img src="https://w7.pngwing.com/pngs/326/85/png-transparent-google-logo-google-text-trademark-logo-thumbnail.png" alt="" className="google-img" />
-            <span>Registrar com o Google</span>
-          </a>
-        </div>
-      </div>
-    </section>
+    <View style={styles.container}>
+      <View style={styles.form}>
+        <Text style={styles.title}>Login</Text>
+        <TextInput
+          style={[styles.input, { marginTop: -5 }]}
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+          <Text style={styles.buttonText}>Iniciar sessão</Text>
+        </TouchableOpacity>
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        <TouchableOpacity onPress={() => navigation.navigate('Registration')}>
+          <Text style={[styles.registerText, { color: '#4CAF50' }]}>Não tem uma conta? Registar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
-export default LoginPage;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#4CAF50',
+  },
+  form: {
+    backgroundColor: '#fff',
+    padding: 40,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    width: '80%',
+    maxWidth: 400,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 20,
+  },
+  registerText: {
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: '#88d968',
+    borderRadius: 10,
+    padding: 15,
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
+
+export default SignInScreen;

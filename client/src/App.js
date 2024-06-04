@@ -1,24 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import LoginPage from './Screens/LoginPage';
-import MapPage from './Screens/Map';
-import RegistrationPage from './Screens/RegistrationPage';
-import PasswordResetForm from './Screens/Password';
-import AdminDash from './Screens/AdminDash';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import MapScreen from './Screens/Map';
+import SignInScreen from './Screens/LoginPage';
+import Registration from './Screens/RegistrationPage';
 
-function App() {
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/login" component={LoginPage} />
-        <Route path="/map" component={MapPage} />
-        <Route path="/registro" component={RegistrationPage} />
-        <Route path="/password" component={PasswordResetForm} />
-        <Route path="/admin" component={AdminDash} />
-        <Redirect from="/" to="/login" exact />
-      </Switch>
-    </Router>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="Map" component={MapScreen} />
+        <Stack.Screen name="Registration" component={Registration} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
 export default App;

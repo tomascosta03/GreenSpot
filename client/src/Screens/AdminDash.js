@@ -1,85 +1,84 @@
-// AdminDash.js
-
 import React, { useState } from 'react';
+import { Text, View } from 'react-native'; // Importar o componente Text do React Native
 import './AdminDash.css';
 
 const AdminDash = () => {
   const [selectedItem, setSelectedItem] = useState('dashboard'); // Estado para controlar o item selecionado
 
   return (
-    <div className="container">
+    <View className="container"> {/* Substituir div por View */}
       <aside>
         <div className="top">
           <div className="logo">
             <img src="/Imgs/parking.jpg" alt="teste" width="25" height="25"/>
-            <h2>Green<span className="danger"></span>Spot</h2>
+            <Text style={{ fontSize: 20 }}>Green</Text><Text className="danger" style={{ fontSize: 20 }}>Spot</Text> {/* Usar Text para renderizar texto */}
           </div>
           <div className="close" id="close-btn">
-            <span className="material-icons-sharp">close</span>
+            <Text>close</Text> {/* Usar Text para renderizar texto */}
           </div>
         </div>
         <div className='sidebar'>
           <a href='#' className={selectedItem === 'dashboard' ? 'active' : ''} onClick={() => setSelectedItem('dashboard')}>
             <span className='material-icons-sharp'>grid_view</span>
-            <h3>DashBoard</h3>
+            <Text>DashBoard</Text> {/* Usar Text para renderizar texto */}
           </a>
         </div>
         <div className='sidebar'>
           <a href='#' className={selectedItem === 'parques' ? 'active' : ''} onClick={() => setSelectedItem('parques')}>
             <span className="material-symbols-outlined">local_parking</span>
-            <h3>Parques</h3>
+            <Text>Parques</Text> {/* Usar Text para renderizar texto */}
           </a>
         </div>
         <div className='sidebar'>
           <a href='#' className={selectedItem === 'utilizadores' ? 'active' : ''} onClick={() => setSelectedItem('utilizadores')}>
             <span className="material-symbols-outlined">group</span>
-            <h3>Utilizadores</h3>
+            <Text>Utilizadores</Text> {/* Usar Text para renderizar texto */}
           </a>
         </div>
         <div className='sidebar'>
           <a href='#' className={selectedItem === 'definicoes' ? 'active' : ''} onClick={() => setSelectedItem('definicoes')}>
             <span className="material-symbols-outlined">settings</span>
-            <h3>Definições</h3>
+            <Text>Definições</Text> {/* Usar Text para renderizar texto */}
           </a>
         </div>
       </aside>
 
       <main>
-        <h1>Dashoard</h1>
-        <div className="date">
+        <Text style={{ fontSize: 24 }}>Dashoard</Text> {/* Usar o componente Text para renderizar texto */}
+        <View className="date"> {/* Substituir div por View */}
           <input type='date'></input>
-        </div>
+        </View>
 
-        <div className="overview">
-          <h2>Visão Geral dos Parques</h2>
-          <div className="park-info">
-            <div>Total de Parques: 10</div>
-            <div>Parques Ativos: 8</div>
-            <div>Parques Inativos: 1</div>
-            <div>Parques em Manutenção: 1</div>
-            <div>Número de Visitantes: 5000/dia</div>
-          </div>
-        </div>
+        <View className="overview"> {/* Substituir div por View */}
+          <Text style={{ fontSize: 20 }}>Visão Geral dos Parques</Text> {/* Usar o componente Text para renderizar texto */}
+          <View className="park-info"> {/* Substituir div por View */}
+            <Text>Total de Parques: 10</Text> {/* Usar o componente Text para renderizar texto */}
+            <Text>Parques Ativos: 8</Text> {/* Usar o componente Text para renderizar texto */}
+            <Text>Parques Inativos: 1</Text> {/* Usar o componente Text para renderizar texto */}
+            <Text>Parques em Manutenção: 1</Text> {/* Usar o componente Text para renderizar texto */}
+            <Text>Número de Visitantes: 5000/dia</Text> {/* Usar o componente Text para renderizar texto */}
+          </View>
+        </View>
 
-        <div className="insights">
-          <div className="sales">
-            <span className="material-icons-sharp">analytics</span>
-            <div className="middle">
-              <div className="left">
-                <h3>Total de Parques</h3>
-                <h1>$25,024</h1>
-              </div>
-              <div className="progress">
+        <View className="insights"> {/* Substituir div por View */}
+          <View className="sales"> {/* Substituir div por View */}
+            <Text>analytics</Text> {/* Usar Text para renderizar texto */}
+            <View className="middle"> {/* Substituir div por View */}
+              <View className="left"> {/* Substituir div por View */}
+                <Text>Total de Parques</Text> {/* Usar Text para renderizar texto */}
+                <Text>$25,024</Text> {/* Usar Text para renderizar texto */}
+              </View>
+              <View className="progress"> {/* Substituir div por View */}
                 <svg>
                   <circle cx='38' cy='38' r='36'></circle>
                 </svg>
-                <div className="number"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+                <Text>0</Text> {/* Usar Text para renderizar texto */}
+              </View>
+            </View>
+          </View>
+        </View>
       </main>
-    </div>
+    </View>
   );
 };
 
