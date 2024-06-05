@@ -1,5 +1,5 @@
 import express from "express";
-
+import { reserveSpot } from '../controllers/spotController';
 
 const router = express.Router()
 const Spot = require('../models/spotModel')
@@ -12,20 +12,23 @@ const {
 } = require('../controllers/spotController')
 
 
-// todos os utilizadores
+// todos os lugares
 router.get("/", getSpots)
 
-// ver um utilizador
+// ver um lugar
 router.get("/:id", getSpot)
 
-//adicionar um utilizador
+//adicionar um lugar
 router.post("/", createSpot)
 
-//remover um utilizador
+//remover um lugar
 router.delete('/:id', deleteSpot)
 
-//atualizar um utilizador
+//atualizar um lugar
 router.patch('/:id', updateSpot)
+
+// Reservar um spot em especifico
+router.post('/reserve/:spotId', reserveSpot);
 
 
 export default router;

@@ -1,16 +1,30 @@
-import mongoose from "mongoose"
+import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const reservationSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  spot: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Spot',
+    required: true
+  },
+  startTime: {
+    type: Date,
+    required: true
+  },
+  endTime: {
+    type: Date,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
-const reservationSchema = new Schema({
-    dayAndHour: {
-        type: Date,
-        required: true
-    },
-    duration: {
-        type: Number,
-        required: true
-    }
-}, { timestamps: true });
+const Reservation = mongoose.model('Reservation', reservationSchema);
 
-module.exports = mongoose.model('Reservation', reservationSchema);
+export default Reservation;
