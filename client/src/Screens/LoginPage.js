@@ -26,7 +26,7 @@ export default function LoginScreen() {
     console.log("Attempting login with email:", email);
 
     try {
-      const response = await axios.post(`http://192.168.1.76:8000/api/users/login`, {
+      const response = await axios.post(`http://10.1.58.79:8000/api/users/login`, {
         email,
         password,
       });
@@ -38,7 +38,7 @@ export default function LoginScreen() {
       if (response.status === 200 && response.data.token) {
         console.log("Login successful");
         Alert.alert('Login bem-sucedido');
-        navigation.navigate('Map'); // Redireciona para a tela do mapa
+        navigation.navigate('Map');
       } else {
         console.log("Login failed:", response.data.message);
         setError('Credenciais inválidas. Por favor, tente novamente.');

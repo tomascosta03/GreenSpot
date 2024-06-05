@@ -16,7 +16,9 @@ const port = process.env.PORT;
 const mongoose = require('mongoose');
 //middleware 
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: ['192.168.1.76:8081', 'http://localhost:8000']
+}));
 app.use((0, morgan_1.default)('tiny'));
 app.use('/api/users', user_1.default);
 app.use('/api/parks', park_1.default);
