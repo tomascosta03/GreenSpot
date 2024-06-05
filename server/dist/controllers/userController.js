@@ -65,9 +65,15 @@ const loginUser = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, f
         res.status(400).json({ message: 'Credenciais Inválidas' });
     }
 }));
-const getMe = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(200).json(req.user);
-}));
+const getMe = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield userModel_1.default.findById(req.user._id).select('-password');
+        res.status(200).json(user);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+});
 // Generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {

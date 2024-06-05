@@ -2,10 +2,17 @@ import React from 'react';
 import { StatusBar, StyleSheet, SafeAreaView } from 'react-native'; 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+<<<<<<< Updated upstream
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
 import { Ionicons } from '@expo/vector-icons'; 
 import MapScreen from './Screens/Map'; 
 import ProfileScreen from './Screens/Profile';
+=======
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; // Importe o createBottomTabNavigator
+import { Ionicons } from '@expo/vector-icons'; // Importe os ícones do Ionicons
+import MapScreen from './Screens/Map'; // 
+import ProfileScreen from './Screens/ProfilePage';
+>>>>>>> Stashed changes
 import SettingsScreen from './Screens/Settings';
 import SignInScreen from './Screens/LoginPage';
 import Registration from './Screens/RegistrationPage';

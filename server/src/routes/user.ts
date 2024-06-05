@@ -16,7 +16,7 @@ const {
 } = require('../controllers/userController')
 
 import protect from "../middleware/authMiddleware";
-router.get('/me', protect, getMe)
+router.get('/me', getMe)
 
 // todos os utilizadores
 router.get("/", protect, getUsers)
