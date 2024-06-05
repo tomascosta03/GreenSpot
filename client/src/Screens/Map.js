@@ -1,8 +1,8 @@
-// Map.js
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import axios from 'axios';
+import { IP_MACHINE } from '@env';
 import { Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,7 +19,7 @@ function MapScreen() {
   useEffect(() => {
     const fetchParques = async () => {
       try {
-        const response = await axios.get('http://10.1.60.126:8000/api/parks');
+        const response = await axios.get(`http://${IP_MACHINE}/api/parks`);
         console.log('Dados do parque:', response.data);
         setParques(response.data);
       } catch (error) {
@@ -29,7 +29,7 @@ function MapScreen() {
 
     const fetchSpots = async () => {
       try {
-        const response = await axios.get('http://10.1.60.126:8000/api/spots');
+        const response = await axios.get(`http://${IP_MACHINE}/api/spots`);
         console.log('Dados dos spots:', response.data);
         setSpots(response.data);
       } catch (error) {

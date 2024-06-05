@@ -1,4 +1,3 @@
-// src/Screens/Password.js
 import React, { useState } from 'react';
 import { Text } from 'react-native'; // Importe o componente Text do React Native
 import './LoginPage.css'; 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { IP_MACHINE } from '@env';
 
 function RegisterPage({ navigation }) {
   const [name, setName] = useState('');
@@ -21,7 +22,7 @@ function RegisterPage({ navigation }) {
 
     try {
       console.log('Enviando dados para registo:', { name, email, password });
-      const response = await axios.post('http://localhost:8000/api/users/register', {
+      const response = await axios.post(`http://${IP_MACHINE}/api/users/register`, {
         name,
         email,
         password,

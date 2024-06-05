@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from "react";
+import { IP_MACHINE } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StyleSheet,
@@ -27,7 +28,7 @@ export default function LoginScreen() {
     console.log("Tentativa de login com o seguinte email:", email);
 
     try {
-      const response = await axios.post(`http://10.1.60.126:8000/api/users/login`, {
+      const response = await axios.post(`http://${IP_MACHINE}/api/users/login`, {
         email,
         password,
       });

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TextInput, Button, Alert } from 'react-native';
 import axios from 'axios';
+import { IP_MACHINE } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePage = ({ navigation }) => {
@@ -28,7 +29,7 @@ const ProfilePage = ({ navigation }) => {
           },
         };
 
-        const response = await axios.get('http://10.1.60.126:8000/api/users/me', config);
+        const response = await axios.get(`http://${IP_MACHINE}/api/users/me`, config);
         console.log("Dados do utilizador obtidos:", response.data);
         setUser(response.data);
         setName(response.data.name);
