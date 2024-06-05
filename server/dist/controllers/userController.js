@@ -20,14 +20,12 @@ const asyncHandler = require('express-async-handler');
 const registerUser = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
-        res.status(400);
-        throw new Error('Please add all fields');
+        res.status(400).json({ message: 'Por favor adiciona todos os campos' });
     }
     // Check if user exists
     const userExists = yield userModel_1.default.findOne({ email });
     if (userExists) {
-        res.status(400);
-        throw new Error('User already exists');
+        res.status(400).json({ message: 'Utilizador Existente' });
     }
     // Hash password
     const salt = yield bcrypt.genSalt(10);
@@ -48,8 +46,7 @@ const registerUser = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0
         });
     }
     else {
-        res.status(400);
-        throw new Error('Invalid user data');
+        res.status(400).json({ message: 'Dados do utilizador inválidos' });
     }
 }));
 const loginUser = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -65,12 +62,10 @@ const loginUser = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, f
         });
     }
     else {
-        res.status(400);
-        throw new Error('Invalid credentials');
+        res.status(400).json({ message: 'Credenciais Inválidas' });
     }
 }));
 const getMe = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("ESTOU NO GET ME");
     res.status(200).json(req.user);
 }));
 // Generate JWT
@@ -89,12 +84,12 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params; //da-nos o id dos parametros da route
     if (!mongoose.Types.ObjectId.isValid(id)) {
         // assim verifica se o id e valido e nao crasha a app
-        return res.status(404).json({ error: 'Utilizador nao existe' });
+        return res.status(404).json({ error: 'Utilizador não existe' });
     }
     const user = yield userModel_1.default.findById(id);
     if (!user) {
         // tem de ter o return senao o resto do codigo e executado
-        return res.status(404).json({ error: 'Utilizador nao existe' });
+        return res.status(404).json({ error: 'Utilizador não existe' });
     }
     res.status(200).json(user);
 });
@@ -109,19 +104,19 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (error) {
         res.status(400).json({ error });
     }
-    res.json({ mssg: 'POST a new User' });
+    res.json({ message: 'POST de um novo utilizador' });
 });
 //eliminar um utilizador
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params; //da-nos o id dos parametros da route
     if (!mongoose.Types.ObjectId.isValid(id)) {
         // assim verifica se o id e valido e nao crasha a app
-        return res.status(404).json({ error: 'Utilizador nao existe' });
+        return res.status(404).json({ error: 'Utilizador não existe' });
     }
     const user = yield userModel_1.default.findOneAndDelete({ _id: id });
     if (!user) {
         // tem de ter o return senao o resto do codigo e executado
-        return res.status(400).json({ error: 'Utilizador nao existe' });
+        return res.status(400).json({ error: 'Utilizador não existe' });
     }
     res.status(200).json(user);
 });
@@ -130,12 +125,12 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { id } = req.params; //da-nos o id dos parametros da route
     if (!mongoose.Types.ObjectId.isValid(id)) {
         // assim verifica se o id e valido e nao crasha a app
-        return res.status(404).json({ error: 'Utilizador nao existe' });
+        return res.status(404).json({ error: 'Utilizador não existe' });
     }
     const user = yield userModel_1.default.findOneAndUpdate({ _id: id }, Object.assign({}, req.body));
     if (!user) {
         // tem de ter o return senao o resto do codigo e executado
-        return res.status(400).json({ error: 'Utilizador nao existe' });
+        return res.status(400).json({ error: 'Utilizador não existe' });
     }
     res.status(200).json(user);
 });

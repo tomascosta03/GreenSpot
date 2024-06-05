@@ -9,15 +9,15 @@ const { createUser, getUsers, getUser, deleteUser, updateUser, getMe, registerUs
 const authMiddleware_1 = __importDefault(require("../middleware/authMiddleware"));
 router.get('/me', authMiddleware_1.default, getMe);
 // todos os utilizadores
-router.get("/", getUsers);
+router.get("/", authMiddleware_1.default, getUsers);
 // ver um utilizador
-router.get("/:id", getUser);
+router.get("/:id", authMiddleware_1.default, getUser);
 //adicionar um utilizador
-router.post("/", createUser);
+router.post("/", authMiddleware_1.default, createUser);
 //remover um utilizador
-router.delete('/:id', deleteUser);
+router.delete('/:id', authMiddleware_1.default, deleteUser);
 //atualizar um utilizador
-router.patch('/:id', updateUser);
+router.patch('/:id', authMiddleware_1.default, updateUser);
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 exports.default = router;

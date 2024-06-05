@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; // Importe o createBottomTabNavigator
 import { Ionicons } from '@expo/vector-icons'; // Importe os ícones do Ionicons
-import MapScreen from './Screens/Map';
+import MapScreen from './Screens/Map'; // 
 import ProfileScreen from './Screens/Profile';
 import SettingsScreen from './Screens/Settings';
 import SignInScreen from './Screens/LoginPage';

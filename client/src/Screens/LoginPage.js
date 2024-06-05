@@ -1,39 +1,55 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import axios from "axios";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert
+} from "react-native";
 
-function SignInScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  const handleSignIn = async () => {
-    setError('');
-  
+export default function LoginScreen() {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    console.log("Attempting login with email:", email);
+
     try {
-      const response = await axios.post('http://localhost:8000/api/users/login', {
+      const response = await axios.post(`http://192.168.1.76:8000/api/users/login`, {
         email,
-        password
+        password,
       });
 
-      // Verifica se a autenticação foi bem-sucedida
-      if (response.data.success) {
-        // Salva o token no AsyncStorage
-        await AsyncStorage.setItem('token', response.data.token);
+      setIsLoading(false);
 
-        // Navega para a tela de Map
-        navigation.navigate('Map');
+      console.log("Login response:", response);
+
+      if (response.status === 200 && response.data.token) {
+        console.log("Login successful");
+        Alert.alert('Login bem-sucedido');
+        navigation.navigate('Map'); // Redireciona para a tela do mapa
       } else {
-        // Exibe mensagem de erro se a autenticação falhou
+        console.log("Login failed:", response.data.message);
         setError('Credenciais inválidas. Por favor, tente novamente.');
       }
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      setError('Erro ao fazer login. Por favor, tente novamente.');
+      setIsLoading(false);
+      setError("Erro ao fazer login. Por favor, tente novamente.");
+      console.error("Erro ao fazer login:", error);
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.form}>
@@ -51,9 +67,10 @@ function SignInScreen({ navigation }) {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>Iniciar sessão</Text>
         </TouchableOpacity>
+        {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <TouchableOpacity onPress={() => navigation.navigate('Registration')}>
           <Text style={[styles.registerText, { color: '#4CAF50' }]}>Não tem uma conta? Registar</Text>
@@ -123,5 +140,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default SignInScreen;

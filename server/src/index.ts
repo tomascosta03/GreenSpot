@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import UserRouter from "./routes/user";
 import ParkRouter from "./routes/park";
 import SpotRouter from "./routes/spot"
-
+import cors from 'cors';
 
 dotenv.config();
 
@@ -14,6 +14,10 @@ const mongoose = require('mongoose');
 
 //middleware 
 app.use(express.json())
+
+app.use(cors({
+    origin: ['192.168.1.76:8081', 'http://localhost:8000']
+  }));
 
 
 app.use(morgan('tiny'));
