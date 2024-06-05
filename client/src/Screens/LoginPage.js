@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StyleSheet,
   Text,
@@ -23,24 +24,29 @@ export default function LoginScreen() {
     setIsLoading(true);
     setError(null);
 
-    console.log("Attempting login with email:", email);
+    console.log("Tentativa de login com o seguinte email:", email);
 
     try {
-      const response = await axios.post(`http://10.1.58.79:8000/api/users/login`, {
+      const response = await axios.post(`http://10.1.60.126:8000/api/users/login`, {
         email,
         password,
       });
 
       setIsLoading(false);
 
-      console.log("Login response:", response);
+      console.log("Resposta do login:", response);
 
       if (response.status === 200 && response.data.token) {
-        console.log("Login successful");
         Alert.alert('Login bem-sucedido');
+
+
+        // Salvar o token no AsyncStorage
+        await AsyncStorage.setItem('token', response.data.token);
+        console.log("Token guardado:", response.data.token);
+
         navigation.navigate('Map');
       } else {
-        console.log("Login failed:", response.data.message);
+        console.log("Login falhado:", response.data.message);
         setError('Credenciais inválidas. Por favor, tente novamente.');
       }
     } catch (error) {

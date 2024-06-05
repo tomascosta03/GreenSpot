@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function MapScreen() {
   const [parques, setParques] = useState([]);
+  const [spots, setSpots] = useState([]);
   const [initialRegion, setInitialRegion] = useState({
     latitude: 37.7399,
     longitude: -25.6687,
@@ -18,11 +19,21 @@ function MapScreen() {
   useEffect(() => {
     const fetchParques = async () => {
       try {
-        const response = await axios.get('http://192.168.1.76:8000/api/parks');
+        const response = await axios.get('http://10.1.60.126:8000/api/parks');
         console.log('Dados do parque:', response.data);
         setParques(response.data);
       } catch (error) {
         console.error('Erro ao buscar parques:', error.message);
+      }
+    };
+
+    const fetchSpots = async () => {
+      try {
+        const response = await axios.get('http://10.1.60.126:8000/api/spots');
+        console.log('Dados dos spots:', response.data);
+        setSpots(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar spots:', error.message);
       }
     };
 
@@ -40,6 +51,7 @@ function MapScreen() {
     };
 
     fetchParques();
+    fetchSpots();
     loadInitialRegion();
   }, []);
 
@@ -64,6 +76,24 @@ function MapScreen() {
             <Text style={styles.title}>{parque.name}</Text>
             <Text style={styles.info}>Lugares Disponíveis: {parque.emptySpaces}</Text>
             <Text style={styles.info}>Lugares Ocupados: {parque.occupiedSpaces}</Text>
+          </Callout>
+        </Marker>
+      ))}
+      {spots.map(spot => (
+        <Marker
+          key={spot._id}
+          coordinate={{
+            latitude: spot.latitude,
+            longitude: spot.longitude,
+          }}
+        >
+          <Image
+            source={require('../Assets/Pin.png')}
+            style={styles.pinImage}
+          />
+          <Callout>
+            <Text style={styles.title}>{spot.name}</Text>
+            <Text style={styles.info}>Status: {spot.reserved ? 'Reservado' : 'Disponível'}</Text>
           </Callout>
         </Marker>
       ))}

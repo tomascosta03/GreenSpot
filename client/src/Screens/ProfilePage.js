@@ -1,33 +1,81 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TextInput, Button, Alert } from 'react-native';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Adicionar esta linha
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileScreen = () => {
+const ProfilePage = ({ navigation }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = await AsyncStorage.getItem('token'); // Buscar o token do AsyncStorage
+        const token = await AsyncStorage.getItem('token');
+        console.log("Token recebido:", token);
+
+        if (!token) {
+          setError('Token não encontrado. Faça login novamente.');
+          setLoading(false);
+          return;
+        }
+
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
-        const response = await axios.get('http://193.136.242.232/api/users/me', config); // Adicionar URL do seu servidor
+
+        const response = await axios.get('http://10.1.60.126:8000/api/users/me', config);
+        console.log("Dados do utilizador obtidos:", response.data);
         setUser(response.data);
+        setName(response.data.name);
+        setEmail(response.data.email);
         setLoading(false);
       } catch (err) {
-        setError(err.response ? err.response.data.message : err.message);
+        console.error('Erro obtendo os dados do utilizador:', err);
+        if (err.response && err.response.status === 401) {
+          setError('Não autorizado. Faça login novamente.');
+          await AsyncStorage.removeItem('token');
+        } else {
+          setError(err.response ? err.response.data.message : err.message);
+        }
         setLoading(false);
       }
     };
 
     fetchUser();
   }, []);
+
+  const handleUpdate = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        Alert.alert('Erro', 'Token não encontrado. Faça login novamente.');
+        return;
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const updates = {
+        name,
+        email,
+      };
+
+      const response = await axios.patch(`http://10.1.60.126:8000/api/users/${user._id}`, updates, config);
+      console.log("Utilizador atualizado:", response.data);
+      Alert.alert('Sucesso', 'Utilizador atualizado com sucesso');
+    } catch (error) {
+      console.error('Erro atualizando o utilizador:', error);
+      Alert.alert('Erro', 'Erro ao atualizar utilizador. Tente novamente.');
+    }
+  };
 
   if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   if (error) return <Text>Error: {error}</Text>;
@@ -37,9 +85,19 @@ const ProfileScreen = () => {
       <Text style={styles.title}>Profile</Text>
       {user && (
         <View>
-          <Text>Name: {user.name}</Text>
-          <Text>Email: {user.email}</Text>
-          {/* Adicione mais campos conforme necessário */}
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <Button title="Update Profile" onPress={handleUpdate} />
         </View>
       )}
     </View>
@@ -57,6 +115,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  input: {
+    width: '100%',
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
 });
 
-export default ProfileScreen;
+export default ProfilePage;
