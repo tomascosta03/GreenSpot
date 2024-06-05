@@ -15,14 +15,12 @@ const spotSchema = new Schema({
         type: Number,
         required: true
     },
-    occupied: {
+    reserved: {
         type: Boolean,
-        required: true
+        default: false
     },
-    isPrivate: {
-        type: Boolean,
-        required: true
-    }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Spot', spotSchema);
+const Spot = mongoose.model('Spot', spotSchema);
+
+export default Spot;

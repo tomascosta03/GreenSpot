@@ -18,13 +18,10 @@ const spotSchema = new Schema({
         type: Number,
         required: true
     },
-    occupied: {
+    reserved: {
         type: Boolean,
-        required: true
+        default: false
     },
-    isPrivate: {
-        type: Boolean,
-        required: true
-    }
 }, { timestamps: true });
-module.exports = mongoose_1.default.model('Spot', spotSchema);
+const Spot = mongoose_1.default.model('Spot', spotSchema);
+exports.default = Spot;

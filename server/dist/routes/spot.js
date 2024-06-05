@@ -4,17 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const spotController_1 = require("../controllers/spotController");
 const router = express_1.default.Router();
 const Spot = require('../models/spotModel');
 const { createSpot, getSpots, getSpot, deleteSpot, updateSpot } = require('../controllers/spotController');
-// todos os utilizadores
+// todos os lugares
 router.get("/", getSpots);
-// ver um utilizador
+// ver um lugar
 router.get("/:id", getSpot);
-//adicionar um utilizador
+//adicionar um lugar
 router.post("/", createSpot);
-//remover um utilizador
+//remover um lugar
 router.delete('/:id', deleteSpot);
-//atualizar um utilizador
+//atualizar um lugar
 router.patch('/:id', updateSpot);
+// Reservar um spot em especifico
+router.post('/reserve/:spotId', spotController_1.reserveSpot);
 exports.default = router;

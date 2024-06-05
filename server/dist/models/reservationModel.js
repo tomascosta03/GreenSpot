@@ -4,15 +4,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const Schema = mongoose_1.default.Schema;
-const reservationSchema = new Schema({
-    dayAndHour: {
+const reservationSchema = new mongoose_1.default.Schema({
+    user: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    spot: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: 'Spot',
+        required: true
+    },
+    startTime: {
         type: Date,
         required: true
     },
-    duration: {
-        type: Number,
+    endTime: {
+        type: Date,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
-}, { timestamps: true });
-module.exports = mongoose_1.default.model('Reservation', reservationSchema);
+});
+const Reservation = mongoose_1.default.model('Reservation', reservationSchema);
+exports.default = Reservation;
