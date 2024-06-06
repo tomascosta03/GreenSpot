@@ -14,7 +14,7 @@ import Registration from './Screens/RegistrationPage';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-export const IP_MACHINE = "192.168.1.76:8000";
+export const IP_MACHINE = "192.168.1.90:8000";
 
 const AuthStack = () => (
   <Stack.Navigator initialRouteName="SignIn">
