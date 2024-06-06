@@ -25,6 +25,9 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    profileImage: {
+        type: String
     }
 }, { timestamps: true });
 const User = mongoose_1.default.model('User', userSchema);

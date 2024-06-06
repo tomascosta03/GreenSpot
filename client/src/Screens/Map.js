@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, Image, View, Text } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import axios from 'axios';
-import { Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IP_MACHINE } from '../App.js';
 
@@ -64,18 +63,20 @@ function MapScreen() {
         <Marker
           key={parque._id}
           coordinate={{
-            latitude: parque.latitude,
-            longitude: parque.longitude,
+            latitude: parque.longitude,
+            longitude: parque.latitude,
           }}
         >
           <Image
             source={require('../Assets/Pin.png')}
             style={styles.pinImage}
           />
-          <Callout>
-            <Text style={styles.title}>{parque.name}</Text>
-            <Text style={styles.info}>Lugares Disponíveis: {parque.emptySpaces}</Text>
-            <Text style={styles.info}>Lugares Ocupados: {parque.occupiedSpaces}</Text>
+          <Callout style={styles.callout}>
+            <View style={styles.calloutContainer}>
+              <Text style={styles.title}>{parque.name}</Text>
+              <Text style={styles.info}>Lugares Disponíveis: {parque.emptySpaces}</Text>
+              <Text style={styles.info}>Lugares Ocupados: {parque.occupiedSpaces}</Text>
+            </View>
           </Callout>
         </Marker>
       ))}
@@ -83,17 +84,19 @@ function MapScreen() {
         <Marker
           key={spot._id}
           coordinate={{
-            latitude: spot.latitude,
-            longitude: spot.longitude,
+            latitude: spot.longitude,
+            longitude: spot.latitude,
           }}
         >
           <Image
             source={require('../Assets/Pin.png')}
             style={styles.pinImage}
           />
-          <Callout>
-            <Text style={styles.title}>{spot.name}</Text>
-            <Text style={styles.info}>Status: {spot.reserved ? 'Reservado' : 'Disponível'}</Text>
+          <Callout style={styles.callout}>
+            <View style={styles.calloutContainer}>
+              <Text style={styles.title}>{spot.name}</Text>
+              <Text style={styles.info}>Status: {spot.reserved ? 'Reservado' : 'Disponível'}</Text>
+            </View>
           </Callout>
         </Marker>
       ))}
@@ -109,6 +112,14 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     resizeMode: 'contain',
+  },
+  callout: {
+    minWidth: 250,
+    padding: 10,
+  },
+  calloutContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   title: {
     fontSize: 14,

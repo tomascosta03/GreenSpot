@@ -13,7 +13,6 @@ import {
   Alert
 } from "react-native";
 
-
 export default function LoginScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
@@ -40,12 +39,15 @@ export default function LoginScreen() {
       if (response.status === 200 && response.data.token) {
         Alert.alert('Login bem-sucedido');
 
-
         // Salvar o token no AsyncStorage
         await AsyncStorage.setItem('token', response.data.token);
         console.log("Token guardado:", response.data.token);
 
-        navigation.navigate('Map');
+        // Navegar para a tela principal, que irá carregar a tab bar
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Map' }],
+        });
       } else {
         console.log("Login falhado:", response.data.message);
         setError('Credenciais inválidas. Por favor, tente novamente.');
@@ -92,58 +94,39 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4CAF50',
   },
   form: {
-    backgroundColor: '#fff',
-    padding: 40,
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
     width: '80%',
-    maxWidth: 400,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 20,
-  },
-  registerText: {
-    marginTop: 10,
-    textAlign: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 32,
+    marginBottom: 16,
     textAlign: 'center',
   },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
   button: {
-    backgroundColor: '#88d968',
-    borderRadius: 10,
+    backgroundColor: '#4CAF50',
     padding: 15,
-    width: '100%',
+    borderRadius: 5,
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  registerText: {
+    textAlign: 'center',
+    marginTop: 10,
   },
 });
