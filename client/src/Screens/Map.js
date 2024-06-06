@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import axios from 'axios';
-import { IP_MACHINE } from '@env';
 import { Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IP_MACHINE } from '../App.js';
 
 function MapScreen() {
   const [parques, setParques] = useState([]);

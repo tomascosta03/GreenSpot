@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TextInput, Button, Alert } from 'react-native';
 import axios from 'axios';
-import { IP_MACHINE } from '@env';
+import { IP_MACHINE } from '../App.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePage = ({ navigation }) => {
@@ -69,7 +69,7 @@ const ProfilePage = ({ navigation }) => {
         email,
       };
 
-      const response = await axios.patch(`http://10.1.60.126:8000/api/users/${user._id}`, updates, config);
+      const response = await axios.patch(`http://${IP_MACHINE}/api/users/${user._id}`, updates, config);
       console.log("Utilizador atualizado:", response.data);
       Alert.alert('Sucesso', 'Utilizador atualizado com sucesso');
     } catch (error) {

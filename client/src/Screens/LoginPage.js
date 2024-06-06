@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from "react";
-import { IP_MACHINE } from '@env';
+import { IP_MACHINE } from '../App.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StyleSheet,
