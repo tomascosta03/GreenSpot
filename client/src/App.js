@@ -14,9 +14,8 @@ import CreateParkScreen from './Screens/CreatePark';
 
 import AdminScreen from './Screens/AdminDash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
 
-export const IP_MACHINE = "192.168.1.76:8000";
+export const IP_MACHINE = "10.1.60.126:8000";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 

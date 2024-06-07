@@ -19,7 +19,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Limpa o token ao montar a página de login
+
   useEffect(() => {
     const clearToken = async () => {
       try {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IP_MACHINE } from '../App.js';
 
 const AdminDash = ({ navigation }) => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -15,7 +16,7 @@ const AdminDash = ({ navigation }) => {
           return;
         }
 
-        const response = await fetch('http://192.168.1.76:8000/api/users/me', {
+        const response = await fetch(`http://${IP_MACHINE}/api/users/me`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -23,7 +24,7 @@ const AdminDash = ({ navigation }) => {
         });
 
         if (!response.ok) {
-          throw new Error('Erro ao obter informações do usuário');
+          throw new Error('Erro ao obter informações do utilizador');
         }
 
         const userData = await response.json();

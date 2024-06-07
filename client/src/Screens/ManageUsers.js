@@ -16,7 +16,7 @@ const ManageUsersScreen = () => {
         console.log("Token recebido:", tokenFromStorage);
         setToken(tokenFromStorage);
       } catch (error) {
-        console.error('Error getting token from AsyncStorage:', error);
+        console.error('Erro recebendo o token do AsyncStorage:', error);
       }
     };
 
@@ -32,7 +32,7 @@ const ManageUsersScreen = () => {
       })
         .then((response) => {
           if (response.status === 401) {
-            throw new Error('Unauthorized');
+            throw new Error('Não Autorizado');
           }
           return response.json();
         })
@@ -41,8 +41,8 @@ const ManageUsersScreen = () => {
           setLoading(false);
         })
         .catch((error) => {
-          console.error('Error fetching users:', error);
-          setError('Ocorreu um erro ao buscar os usuários. Por favor, tente novamente mais tarde.');
+          console.error('Erro buscando os utilizadores:', error);
+          setError('Ocorreu um erro ao buscar os utilizadores. Por favor, tente novamente mais tarde.');
           setLoading(false);
         });
     }
@@ -57,7 +57,7 @@ const ManageUsersScreen = () => {
     })
       .then((response) => {
         if (response.status === 401) {
-          throw new Error('Unauthorized');
+          throw new Error('Não Autorizado');
         }
         return response.json();
       })
@@ -65,7 +65,7 @@ const ManageUsersScreen = () => {
         setUsers(users.filter((user) => user._id !== userId));
       })
       .catch((error) => {
-        console.error('Error deleting user:', error);
+        console.error('Erro eliminando utilizador:', error);
       });
   };
 

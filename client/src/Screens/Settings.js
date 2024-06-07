@@ -8,7 +8,7 @@ import MapView, { Marker } from 'react-native-maps';
 
 const SettingsScreen = () => {
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
-  const [location, setLocation] = useState('37.7399,-25.6687'); // Localização predefinida
+  const [location, setLocation] = useState('37.7399,-25.6687');
   const [radius, setRadius] = useState('50');
   const [mapVisible, setMapVisible] = useState(false);
   const [tempLocation, setTempLocation] = useState({ latitude: 37.7399, longitude: -25.6687 });

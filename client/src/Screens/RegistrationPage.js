@@ -16,7 +16,7 @@ function RegisterPage({ navigation }) {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match!');
+      setError('Passwords não coincidem!');
       return;
     }
 
@@ -34,11 +34,11 @@ function RegisterPage({ navigation }) {
         await AsyncStorage.setItem('token', token);
         navigation.navigate('Profile');
       } else {
-        setError('Failed to register. Please try again.');
+        setError('Registo falhado. Por favor tentar novamente.');
       }
     } catch (error) {
       console.error('Erro ao registar:', error.response ? error.response.data : error);
-      setError('Failed to register. Please try again.');
+      setError('Registo falhado. Por favor tentar novamente.');
     }
   };
 

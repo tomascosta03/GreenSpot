@@ -1,4 +1,3 @@
-// Auth.js
 import { AsyncStorage } from 'react-native';
 
 const Auth = {

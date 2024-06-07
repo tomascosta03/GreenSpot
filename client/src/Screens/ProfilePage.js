@@ -4,7 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native'; // Importando useFocusEffect
+import { useFocusEffect } from '@react-navigation/native';
 import { IP_MACHINE } from '../App.js';
 
 const ProfilePage = ({ navigation }) => {
@@ -50,7 +50,6 @@ const ProfilePage = ({ navigation }) => {
     }
   }, []);
 
-  // Usando useFocusEffect para chamar fetchUser sempre que a tela recebe foco
   useFocusEffect(
     useCallback(() => {
       fetchUser();
@@ -70,7 +69,7 @@ const ProfilePage = ({ navigation }) => {
   const pickImage = async () => {
     const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (result.granted === false) {
-      alert("Permission to access camera roll is required!");
+      alert("Permissão para aceder à galeria é requirida!");
       return;
     }
 
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    width: '100%',
+    width: 275,
     height: 40,
     borderColor: '#ddd',
     borderWidth: 1,
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#88d968',
     borderRadius: 10,
     padding: 15,
-    width: '100%',
+    width: 275,
     alignItems: 'center',
   },
   buttonText: {
