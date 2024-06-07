@@ -50,7 +50,7 @@ const AdminDash = ({ navigation }) => {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Acesso Restrito</Text>
-        <Text style={styles.message}>Desculpe, você não tem permissão para acessar esta tela.</Text>
+        <Text style={styles.message}>Desculpa!! Mas não tens permissão para aceder, poêm te a andar!</Text>
       </View>
     );
   }
