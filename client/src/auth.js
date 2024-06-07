@@ -1,31 +1,34 @@
-// auth.js
-
+// Auth.js
 import { AsyncStorage } from 'react-native';
 
-export const USER_KEY = 'auth-demo-key';
-
-export const onSignIn = async (token) => {
+const Auth = {
+  getToken: async () => {
     try {
-        await AsyncStorage.setItem(USER_TOKEN_KEY, token);
+      const token = await AsyncStorage.getItem('token');
+      return token;
     } catch (error) {
-        throw new Error('Erro ao salvar token de usuário:', error);
+      console.error('Erro ao obter token de autenticação:', error);
+      return null;
     }
+  },
+  setToken: async (token) => {
+    try {
+      await AsyncStorage.setItem('token', token);
+    } catch (error) {
+      console.error('Erro ao definir token de autenticação:', error);
+    }
+  },
+  clearToken: async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+    } catch (error) {
+      console.error('Erro ao limpar token de autenticação:', error);
+    }
+  },
+  isAuthenticated: async () => {
+    const token = await Auth.getToken();
+    return !!token;
+  }
 };
 
-export const onSignOut = async () => {
-    try {
-      await AsyncStorage.removeItem(USER_TOKEN_KEY);
-    } catch (error) {
-      throw new Error('Erro ao remover token de usuário:', error);
-    }
-  };
-
-  export const isSignedIn = async () => {
-    try {
-      const token = await AsyncStorage.getItem(USER_TOKEN_KEY);
-      return !!token; 
-    } catch (error) {
-      throw new Error('Erro ao verificar se o usuário está autenticado:', error);
-    }
-  };
-  
+export default Auth;

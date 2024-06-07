@@ -1,8 +1,8 @@
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from "react";
-import { IP_MACHINE } from '../App.js';
+import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IP_MACHINE } from '../App.js';
 import {
   StyleSheet,
   Text,
@@ -10,33 +10,44 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Alert
 } from "react-native";
-export default function LoginScreen() {
+
+export default function LoginPage() {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Limpa o token ao montar a página de login
+  useEffect(() => {
+    const clearToken = async () => {
+      try {
+        await AsyncStorage.removeItem('token');
+      } catch (error) {
+        console.error('Erro ao limpar o token:', error);
+      }
+    };
+
+    clearToken();
+  }, []);
+
   const handleLogin = async () => {
     setIsLoading(true);
     setError(null);
-    console.log("Tentativa de login com o seguinte email:", email);
 
     try {
       const response = await axios.post(`http://${IP_MACHINE}/api/users/login`, {
         email,
         password,
       });
+      
       setIsLoading(false);
-      console.log("Resposta do login:", response);
+      
       if (response.status === 200 && response.data.token) {
-        Alert.alert('Login bem-sucedido');
         await AsyncStorage.setItem('token', response.data.token);
-        console.log("Token guardado:", response.data.token);
         navigation.navigate('Map');
       } else {
-        console.log("Login falhado:", response.data.message);
         setError('Credenciais inválidas. Por favor, tente novamente.');
       }
     } catch (error) {
@@ -45,6 +56,7 @@ export default function LoginScreen() {
       console.error("Erro ao fazer login:", error);
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.form}>
@@ -74,6 +86,7 @@ export default function LoginScreen() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

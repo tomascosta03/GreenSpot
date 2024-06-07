@@ -6,11 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="7c542b15-5b2e-4547-b169-11007572fde5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/AdminDash.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/AdminDash.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Screens/AdminDash.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/CreatePark.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Screens/CreatePark.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/LoginPage.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/Screens/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Screens/LoginPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/ManageUsers.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Screens/ManageUsers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/Map.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/Map.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Screens/Map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/ProfilePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Screens/ProfilePage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/SignIn.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/SignOut.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Screens/SignUp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/router.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/client/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routes/park.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/routes/park.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

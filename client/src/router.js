@@ -1,21 +1,27 @@
-// router.js
+// Router.js
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import MapScreen from './Screens/Map'; 
+import SignInScreen from './Screens/LoginPage';
 
-import { createSwitchNavigator } from 'react-navigation';
-import { SignedIn } from './SignedIn'; // Importe o componente SignedIn
-import { SignedOut } from './SignedOut'; // Importe o componente SignedOut
+const Stack = createStackNavigator();
 
-export const createRootNavigator = (signedIn = false) => {
-  return createSwitchNavigator(
-    {
-      SignedIn: {
-        screen: SignedIn
-      },
-      SignedOut: {
-        screen: SignedOut
-      }
-    },
-    {
-      initialRouteName: signedIn ? 'SignedIn' : 'SignedOut'
-    }
-  );
-};
+const Router = () => (
+  <NavigationContainer>
+    <Stack.Navigator initialRouteName="SignIn">
+      <Stack.Screen
+        name="SignIn"
+        component={SignInScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Map"
+        component={MapScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+export default Router;

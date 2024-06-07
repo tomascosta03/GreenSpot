@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TextInput, Alert, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import axios from 'axios';
-import { IP_MACHINE } from '../App.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native'; // Importando useFocusEffect
+import { IP_MACHINE } from '../App.js';
 
 const ProfilePage = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -14,49 +15,79 @@ const ProfilePage = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [profileImage, setProfileImage] = useState(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        console.log("Token recebido:", token);
+  const fetchUser = useCallback(async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      console.log('Token:', token);
 
-        if (!token) {
-          setError('Token não encontrado. Faça login novamente.');
-          setLoading(false);
-          return;
-        }
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        const response = await axios.get(`http://${IP_MACHINE}/api/users/me`, config);
-        console.log("Dados do utilizador obtidos:", response.data);
-        setUser(response.data);
-        setName(response.data.name);
-        setEmail(response.data.email);
-        setProfileImage(response.data.profileImage); // Supondo que a imagem de perfil é retornada
+      if (!token) {
+        setError('Token não encontrado. Faça login novamente.');
         setLoading(false);
-      } catch (err) {
-        console.error('Erro obtendo os dados do utilizador:', err);
-        if (err.response && err.response.status === 401) {
-          setError('Não autorizado. Faça login novamente.');
-          await AsyncStorage.removeItem('token');
-        } else {
-          setError(err.response ? err.response.data.message : err.message);
-        }
-        setLoading(false);
+        return;
       }
-    };
 
-    fetchUser();
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.get(`http://${IP_MACHINE}/api/users/me`, config);
+      setUser(response.data);
+      setName(response.data.name);
+      setEmail(response.data.email);
+      setProfileImage(response.data.profileImage);
+      setLoading(false);
+    } catch (err) {
+      console.error('Erro obtendo os dados do utilizador:', err);
+      if (err.response && err.response.status === 401) {
+        setError('Não autorizado. Faça login novamente.');
+        await AsyncStorage.removeItem('token');
+      } else {
+        setError(err.response ? err.response.data.message : err.message);
+      }
+      setLoading(false);
+    }
   }, []);
+
+  // Usando useFocusEffect para chamar fetchUser sempre que a tela recebe foco
+  useFocusEffect(
+    useCallback(() => {
+      fetchUser();
+    }, [fetchUser])
+  );
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      setUser(null);
+      navigation.navigate('SignIn');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
+  };
+
+  const pickImage = async () => {
+    const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (result.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    if (!pickerResult.cancelled) {
+      const uploadUrl = await uploadImage(pickerResult.uri);
+      if (uploadUrl) {
+        setProfileImage(uploadUrl);
+      }
+    }
+  };
 
   const handleUpdate = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
+      console.log('Token:', token);
+
       if (!token) {
         Alert.alert('Erro', 'Token não encontrado. Faça login novamente.');
         return;
@@ -83,60 +114,19 @@ const ProfilePage = ({ navigation }) => {
     }
   };
 
-  const uploadImage = async (uri) => {
-    const formData = new FormData();
-    formData.append('file', {
-      uri,
-      name: 'profile.jpg',
-      type: 'image/jpeg',
-    });
-    formData.append('userId', user._id);
-
-    const token = await AsyncStorage.getItem('token');
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    try {
-      const response = await axios.post(`http://${IP_MACHINE}/api/upload`, formData, config);
-      return response.data.url;
-    } catch (error) {
-      console.error('Erro ao fazer upload da imagem:', error);
-      Alert.alert('Erro', 'Erro ao fazer upload da imagem. Tente novamente.');
-    }
-  };
-
-  const pickImage = async () => {
-    const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (result.granted === false) {
-      alert("Permission to access camera roll is required!");
-      return;
-    }
-
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    if (!pickerResult.cancelled) {
-      const uploadUrl = await uploadImage(pickerResult.uri);
-      if (uploadUrl) {
-        setProfileImage(uploadUrl);
-      }
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('token'); // Limpa o token de autenticação
-      navigation.navigate('Login'); // Redireciona para a tela de login
-    } catch (error) {
-      console.error('Erro ao fazer logout:', error);
-      // Trate o erro conforme necessário
-    }
-  };
-
   if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   if (error) return <Text style={styles.errorText}>Error: {error}</Text>;
+
+  if (!user) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.notLoggedInText}>Você não fez login.</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignIn')} style={styles.button}>
+          <Text style={styles.buttonText}>Fazer Login</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -144,7 +134,7 @@ const ProfilePage = ({ navigation }) => {
         <Text style={styles.title}>Perfil</Text>
         <TouchableOpacity style={styles.logoutButtonContainer} onPress={handleLogout}>
           <Text>
-            <MaterialIcons name="logout" size={24} color="black" /> {/* Ícone de logout */}
+            <MaterialIcons name="logout" size={24} color="black" />
           </Text>
         </TouchableOpacity>
 
@@ -262,6 +252,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
+  },
+  notLoggedInText: {
+    marginBottom: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

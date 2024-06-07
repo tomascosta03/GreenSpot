@@ -68,7 +68,7 @@ function MapScreen() {
           }}
         >
           <Image
-            source={require('../Assets/Pin.png')}
+            source={require('../Assets/PinPrivado.jpg')}
             style={styles.pinImage}
           />
           <Callout style={styles.callout}>

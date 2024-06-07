@@ -1,37 +1,110 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Text, Button, StyleSheet } from 'react-native';
+import { View, FlatList, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IP_MACHINE } from '../App';
 
 const ManageUsersScreen = () => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Lógica para buscar usuários da API ou banco de dados
-    const fetchedUsers = [
-      { id: '1', name: 'User 1', email: 'user1@example.com' },
-      { id: '2', name: 'User 2', email: 'user2@example.com' },
-      // Mais usuários
-    ];
-    setUsers(fetchedUsers);
+    const getToken = async () => {
+      try {
+        const tokenFromStorage = await AsyncStorage.getItem('token');
+        console.log("Token recebido:", tokenFromStorage);
+        setToken(tokenFromStorage);
+      } catch (error) {
+        console.error('Error getting token from AsyncStorage:', error);
+      }
+    };
+
+    getToken();
   }, []);
 
+  useEffect(() => {
+    if (token) {
+      fetch(`http://${IP_MACHINE}/API/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 401) {
+            throw new Error('Unauthorized');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setUsers(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching users:', error);
+          setError('Ocorreu um erro ao buscar os usuários. Por favor, tente novamente mais tarde.');
+          setLoading(false);
+        });
+    }
+  }, [token]);
+
   const handleDeleteUser = (userId) => {
-    // Lógica para deletar usuário
-    console.log('Deleting user:', userId);
+    fetch(`http://${IP_MACHINE}/API/users/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          throw new Error('Unauthorized');
+        }
+        return response.json();
+      })
+      .then(() => {
+        setUsers(users.filter((user) => user._id !== userId));
+      })
+      .catch((error) => {
+        console.error('Error deleting user:', error);
+      });
   };
+
+  if (!token) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <FlatList
         data={users}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <View style={styles.userItem}>
-            <Text>{item.name}</Text>
-            <Text>{item.email}</Text>
-            <Button
-              title="Delete"
-              onPress={() => handleDeleteUser(item.id)}
-            />
+            <Text style={styles.userText}>{item.name}</Text>
+            <Text style={styles.userText}>{item.email}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => handleDeleteUser(item._id)}>
+              <Text style={styles.buttonText}>Delete</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -43,11 +116,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#4CAF50',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#4CAF50',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#4CAF50',
+  },
+  errorText: {
+    color: '#fff',
+    fontSize: 16,
   },
   userItem: {
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  userText: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  button: {
+    backgroundColor: '#88d968',
+    borderRadius: 10,
+    padding: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
